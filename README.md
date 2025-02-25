@@ -1,4 +1,3 @@
 # Kernel-demo
 # Boots in qemu
-Just a little something I made
-
+once it boots press any key and then type :3 for a surprise
