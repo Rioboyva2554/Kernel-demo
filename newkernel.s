@@ -24,9 +24,14 @@ newlinec: db "", 0x0D, 0x0A, 0
 
 input:
 	mov ah, 0
-	int 0x16	
+	int 0x16
+	; check for backspace
+	cmp al, 0x08
+	je backspace
+	; check for newline
 	cmp al, 0x0D
 	je newline
+	
 	mov ah, 0x0E
 	int 0x10
 	stosb
@@ -41,11 +46,24 @@ newline:
 	int 0x10
 	mov al, '#'
 	int 0x10
-	jmp comparisonchamber
-
-comparisonchamber:
-	cmp di, CAT
-	je fun
+	
+backspace:
+	; checks if first line
+	cmp cl, 0
+	je input
+	; if not:
+	dec di
+	mov byte [di], 0
+	dec cl
+	; removing character on screen
+	mov ah, 0x0E
+	mov al, 0x08
+	int 0x10
+	mov al, ' '
+	int 0x10
+	mov al, 0x08
+	int 0x10
+	jmp input
 	
 	%macro vwritetext 1
 	lea si, %1
@@ -72,11 +90,9 @@ _boot:
 	vwritetext final
 	getch
 	vwritetext newlinec
+	mov ah, 0x0E
+	mov al, '#'
+	int 0x10
 	call input
-	jmp fun
-fun:
-	vwritetext CAT
-	jmp fun
-	
 times 510 - ($-$$) db 0
 dw 0xAA55
