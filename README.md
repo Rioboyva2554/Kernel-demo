@@ -1,3 +1,3 @@
 # Kernel-demo
-# Boots in qemu
-Typing simulator NOW WITH BACKSPACE
+# Does not boot in qemu
+Working on a bootloader
