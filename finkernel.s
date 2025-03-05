@@ -1,5 +1,47 @@
 _start:
 	mov ah, 0x0e
-	mov al, 'Y'
+	mov al, 'H'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'a'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'c'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'k'
+	int 0x10
+	mov ah, 0x0e
+	mov al, ' '
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'T'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'h'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'e'
+	int 0x10
+	mov ah, 0x0e
+	mov al, ' '
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'P'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'l'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'a'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'n'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 'e'
+	int 0x10
+	mov ah, 0x0e
+	mov al, 't'
 	int 0x10
 times 510 - ($-$$) db 0

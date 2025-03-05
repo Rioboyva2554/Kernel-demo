@@ -1,12 +1,6 @@
 bits 16
 org 0x7C00
-FMBALIGN  equ  1 << 0            ; align loaded modules on page boundaries
-FMEMINFO  equ  1 << 1            ; provide memory map
-FVIDMODE  equ  1 << 2            ; try to set graphics mode
-FLAGS     equ  FMBALIGN | FMEMINFO | FVIDMODE
-MAGIC     equ  0x1BADB002
-CHECKSUM  equ -(MAGIC + FLAGS)
-	
+	; Screw genuinely helpful standards like multiboot!
 test1:	db "RCkernel bootloader v0.1", 0x0D, 0x0A, 0
 test2:	db "   _ __ ___ ___", 0x0D, 0x0A, 0
 test3:	db "  | '__/ __/ __|", 0x0D, 0x0A, 0
@@ -23,37 +17,53 @@ kernelboot:	db "Kernel loaded, booting...", 0
 	
 	%macro vwritetext 1
 	lea si, %1
-	call writetextin
+	call printtxt
 	%endmacro
-
-	writetextin:
+	
+	printtxt:
 	lodsb
 	or al, al
 	jz writetextout
 	mov ah, 0x0e
 	int 0x10
-	jmp writetextin
+	jmp printtxt
 
 	writetextout:
 	ret
 _start:
-	
+	jmp conf
+	; Bios Parameter block:
+	DB "RCKernel-OS" 	;OEM id
+	DW 0x0200		;Bytes per sector
+	DB 0x01			;Sectors per cluster
+	DW 0x0001		;Reserved Sectors
+	DB 0x02			;Total fats
+	DW 0x00E0		;Max root entries
+	DW 0x0B40		;Total Sectors (smol)
+	DB 0xF0 		;Media descriptor 
+	DW 0x0009               ;Sectors per File Allocation Table (FAT)
+	DW 0x0012               ;Sectors per Track
+        DW 0x0002               ;number of heads 
+	DD 0x00000000		;Hidden Sectors
+	DD 0x00000000		;Total Sectors (big) 
+	DB 0x00			;Drive Number
+	DB 0x00			;flags
+	DB 0x29			;signature
+	DD 0x00010203		;Volume serial
+	DB "RCOSv1"		;Volume Label
+	DB "FAT12"		;System ID
 
 conf:
-	mov ax, 0x0000          ; Stuff's about to get real
-	mov ds, ax
-	mov es, ax
-	mov ss, ax
-	mov sp, 0x7C00
+
 	vwritetext test1
 	vwritetext test2
 	vwritetext test3
 	vwritetext test4
 	vwritetext test5
 	vwritetext final
-	getch
 	vwritetext done
-	jmp boot
+	call boot
+	jmp $
 boot:
 	vwritetext kernelload
 	mov ax, 0x1000
