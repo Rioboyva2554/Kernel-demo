@@ -1,3 +1,3 @@
-# Kernel-demo
-# Sometimes it boots in qemu
-Bootloader mostly works I just need to make it always work
+# RCKernel
+# Doesn't compile right now
+Importing gdt for syscall Functionality
