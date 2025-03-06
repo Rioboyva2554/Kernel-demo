@@ -1,4 +1,12 @@
+bits 16
+%include "kernel/syscalls.inc"
 _start:
+	mov ah, 0x0e
+	mov al, 0x0D
+	int 0x10
+	mov ah, 0x0e
+	mov al, 0x0A
+	int 0x10
 	mov ah, 0x0e
 	mov al, 'H'
 	int 0x10

@@ -2,7 +2,9 @@ AS=nasm
 OBJ  = bootloader.bin kernel/kernel.bin
 
 all:
-	$(AS) -f bin kernel/main.s -o kernel/kernel.bin
+	$(AS) -f bin kernel/main.s -o kernel/main.bin
+	$(AS) -f bin kernel/systemcalls.s -o kernel/systemcalls.bin
+	gcc kernel/main.bin kernel/systemcalls.bin -o kernel/kernel.bin
 	$(AS) -f bin bootloader.s -o bootloader.bin
 
 disk:
@@ -12,3 +14,8 @@ disk:
 
 run:
 	qemu-system-i386 -fda test.img
+
+clean:
+	rm kernel/kernel.bin
+	rm bootloader.bin
+	rm test.img
