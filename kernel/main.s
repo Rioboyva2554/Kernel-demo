@@ -1,5 +1,5 @@
 bits 16
-%include "kernel/syscalls.inc"
+%include "kernel/gdt.inc"
 _start:
 	mov ah, 0x0e
 	mov al, 0x0D

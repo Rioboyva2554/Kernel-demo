@@ -2,9 +2,9 @@ AS=nasm
 OBJ  = bootloader.bin kernel/kernel.bin
 
 all:
-	$(AS) -f bin kernel/main.s -o kernel/main.bin
-	$(AS) -f bin kernel/systemcalls.s -o kernel/systemcalls.bin
-	gcc kernel/main.bin kernel/systemcalls.bin -o kernel/kernel.bin
+	$(AS) -f elf kernel/main.s -o kernel/main.o
+	$(AS) -f elf kernel/syscalls.s -o kernel/syscalls.o
+	ld kernel/main.o kernel/syscalls.o -o kernel/kernel.bin --oformat binary
 	$(AS) -f bin bootloader.s -o bootloader.bin
 
 disk:
